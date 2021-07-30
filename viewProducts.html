@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1 class="text-center m-3 p-2">Petroleum Product Management System</h1>
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addProduct.html">Add Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="viewProducts.html">View Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="searchProducts.html">Search Products</a>
+        </li>
+    </ul>
+
+    <div class="container">
+        <table class="table table-hover" id="productTable">
+            <thead>
+              <tr>
+                <th scope="col">Sr. No.</th>
+                <th scope="col" onclick="sortTableText(0)">Product Name <img src="elevator.svg" alt="sort-icon"></th>
+                <th scope="col" onclick="sortTableText(1)">Product Brand <img src="elevator.svg" alt="sort-icon"></th>
+                <th scope="col" onclick="sortTableNumbers(2)">Product Quantity <img src="elevator.svg" alt="sort-icon"></th>
+                <th scope="col">Availability</th>
+                <th scope="col" onclick="sortTableNumbers(4)">Product Price <img src="elevator.svg" alt="sort-icon"></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class="modalTable">
+                    <thead>
+                        <th scope="col" id="modalProductName">Product Name</th>
+                        <th scope="col" id="modalProductBrand">Product Brand</th>
+                        <th scope="col" id="modalProductQuantity">Product Quantity</th>
+                        <th scope="col" id="modalProductAvailability">Availability</th>
+                        <th scope="col" id="modalProductPrice">Product Price</th>
+                    </thead>
+                    <tbody id="modal-table-body">
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button onclick="clearModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "data.csv",
+                dataType: "text",
+                success: function(data) {displayProducts(data);}
+            });
+        });
+
+        function displayProducts(data) {
+            let dataLines = data.split("\n");
+
+            for(let i = 1; i < dataLines.length-1; i++) {
+                let dataWords = dataLines[i].split(",");
+
+                $(`<tr id="${i}">
+                <th scope="row">${i}</th>
+                <td>${dataWords[0]}</td>
+                <td>${dataWords[1]}</td>
+                <td>${dataWords[2]}</td>
+                <td>${dataWords[3]}</td>
+                <td>${dataWords[4]}</td>
+                <td><button onclick="populateModal(${i})" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    View Details
+                  </button></td>
+              </tr>`).appendTo("#table-body");
+            }
+        }
+
+
+        function populateModal(id) {
+            let columns = $(`#${id}`).find('td');
+
+            let modalData = [];
+
+            jQuery.each(columns, function(i, item) {
+                // console.log(item.innerHTML);
+                modalData.push(item.innerHTML);
+            });
+
+            modalData.pop();
+            $(`<tr>
+                <td>${modalData[0]}</td>
+                <td>${modalData[1]}</td>
+                <td>${modalData[2]}</td>
+                <td>${modalData[3]}</td>
+                <td>${modalData[4]}</td>
+            </tr>`).appendTo("#modal-table-body");
+        }
+
+
+        function clearModal() {
+            $("#modal-table-body").empty();
+        }
+
+
+        function sortTableText(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("productTable");
+            switching = true;
+            
+            dir = "asc";
+        
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount ++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        function sortTableNumbers(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("productTable");
+            switching = true;
+            dir = "asc";
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    
+                    if (dir == "asc") {
+                        if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                            shouldSwitch = true;
+                        break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount ++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

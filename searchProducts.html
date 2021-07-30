@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1 class="text-center m-3 p-2">Petroleum Product Management System</h1>
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="addProduct.html">Add Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="viewProducts.html">View Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="searchProducts.html">Search Products</a>
+        </li>
+    </ul>
+
+    <div class="container">
+        <form class="form-inline justify-content-center">
+            <div class="row mt-4">
+                <div class="col col-md-10">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Enter a Product Name..." aria-label="Search" id="searchInput">
+                </div>
+                <div class="col col-md-2">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchProduct()">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="alert alert-secondary text-center mt-4" role="alert">
+            Results
+        </div>
+
+        <table class="resultTable table table-hover mt-4">
+            <thead>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Brand</th>
+                <th scope="col">Product Quantity</th>
+                <th scope="col">Availability</th>
+                <th scope="col">Product Price</th>
+            </thead>
+            <tbody id="result-table-body">
+
+            </tbody>
+        </table>
+
+        <div id="error-class"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        function searchProduct() {
+            $("#result-table-body").empty();
+
+            if(String($("#searchInput").val()) == "") {
+                alert("Please enter a product name to search...");
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "data.csv",
+                    dataType: "text",
+                    success: function(data) {
+                    
+                        let dataLines = data.split("\n");
+
+                        let ifMatchFound = false;
+
+                        for(let i = 1; i < dataLines.length-1; i++) {
+                            let dataWords = dataLines[i].split(",");
+
+                            if(String($("#searchInput").val()).toLowerCase() === String(dataWords[0]).toLowerCase()) {
+                                ifMatchFound = true;
+
+                                $(`<tr>
+                                    <td>${dataWords[0]}</td>
+                                    <td>${dataWords[1]}</td>
+                                    <td>${dataWords[2]}</td>
+                                    <td>${dataWords[3]}</td>
+                                    <td>${dataWords[4]}</td>
+                                </tr>`).appendTo($("#result-table-body"));
+                            }
+                        }
+
+                        if(!ifMatchFound) {
+                            $(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                No result found!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>`).appendTo($("#error-class"));
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    
+  </body>
+</html>

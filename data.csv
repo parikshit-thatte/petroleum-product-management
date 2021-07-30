@@ -1,0 +1,4 @@
+name,brand,quantity,availability,price
+Crude Oil,Shell,250,in-stock,250
+Petrol,HP,270,in-stock,300
+Diesel,BPCL,0,out-of-stock,0

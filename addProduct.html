@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1 class="text-center m-3 p-2">Petroleum Product Management System</h1>
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="addProduct.html">Add Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="viewProducts.html">View Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="searchProducts.html">Search Products</a>
+        </li>
+    </ul>
+    <div class="container">
+        <h4 class="mt-4 text-center">Add a new Product</h4>
+
+        <form class="mt-3">
+            <div class="form-group">
+                <div class="row row">
+                    <div class="col col-md-4 text-right">
+                        <label for="productName" class="align-middle">Product Name :</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <input type="text" class="form-control" id="productName" placeholder="Enter Product Name" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col col-md-4 text-right">
+                        <label for="productBrand" class="align-middle">Product Brand :</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <input type="text" class="form-control" id="productBrand" placeholder="Enter Product Brand" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col col-md-4 text-right">
+                        <label for="productQuantity" class="align-middle">Product Quantity :</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <input type="text" class="form-control" id="productQuantity" placeholder="Enter Quantity (in gallons)" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col col-md-4 text-right">
+                        <label for="availability" class="align-middle">Availability :</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <select class="custom-select" id="availability" required>
+                            <option selected>Select availability</option>
+                            <option value="in-stock">In-Stock</option>
+                            <option value="out-of-stock">Out-of-Stock</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col col-md-4 text-right">
+                        <label for="productPrice" class="align-middle">Product Price :</label>
+                    </div>
+                    <div class="col col-md-8">
+                        <input type="text" class="form-control" id="productPrice" placeholder="Enter Price (per gallon)" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <button id="submit" type="submit" class="btn btn-success">Add Product</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        function validateForm() {
+        let x = document.forms["myForm"]["fname"].value;
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
+            }
+        }
+    </script>
+  </body>
+</html>
